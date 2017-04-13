@@ -7,18 +7,14 @@
     "test": "mocha"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
+    "handlebars": "^4.0.6",
     "hbs": "^4.0.1",
+    "i18n": "^0.8.3",
     "mariadb-utilities": "^1.0.1",
     "mysql": "^2.13.0",
-    "passport": "^0.3.2",
-    "passport-amazon": "^1.0.0",
-    "passport-dropbox": "^2.0.0",
-    "passport-facebook": "^2.1.1",
-    "passport-google-oauth20": "^1.0.0",
-    "passport-linkedin": "^1.0.0",
-    "passport-local-authenticate": "^1.2.0",
-    "passport-twitter-token": "^1.3.0"
+    "node-sass": "^4.5.2"
   },
   "repository": {
     "type": "git",
