@@ -1,5 +1,8 @@
 {
-  "Diensteliste.de": "Diensteliste.de",
-  "Privacy": "Datenschutz",
-  "Imprint": "Impressum"
+	"Diensteliste.de": "Diensteliste.de",
+	"Datenschutz": "Datenschutz",
+	"Impressum": "Impressum",
+	"Lizenz": "Lizenz",
+	"start": "los",
+	"Home": "Home"
 }

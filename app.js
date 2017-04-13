@@ -21,6 +21,8 @@ i18n.configure({
   directory: __dirname + '/lang'
 });
 
+hbs.localsAsTemplateData(app);
+
   // setup hbs
   app.set('views', "" + __dirname + "/views");
   app.set('view engine', 'hbs');
@@ -33,7 +35,10 @@ i18n.configure({
   // init i18n module for this loop
   app.use(i18n.init);
 
-
+  app.use(function(req, res, next) {
+    i18n.setLocale(i18n.getLocale(req));
+    return next();
+  });
 
 var blocks = {};
 
@@ -45,8 +50,8 @@ hbs.registerHelper('__n', function () {
   return i18n.__n.apply(this, arguments);
 });
 
-hbs.registerHelper('language', function(name, context) {
-    return
+hbs.registerHelper('language', function() {
+    return i18n.getLocale();
 });
 
 hbs.registerHelper('extend', function(name, context) {
@@ -66,11 +71,16 @@ hbs.registerHelper('block', function(name) {
     return val;
 });
 
+app.use(function(req,res,next){
+    res.locals.language = req.getLocale();
+    next();
+})
+
 app.get('/', function(req, res){
     res.render('index');
 });
 app.get('/imprint', function(req, res){
-    res.render('index',{title: "Imprint"});
+    res.render('index',{title: i18n.__('Impressum')});
 });
 
 app.get('/lang/:locale', function (req, res) {

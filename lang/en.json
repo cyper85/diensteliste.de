@@ -1,9 +1,13 @@
 {
+	"Diensteliste.de": "Diensteliste.de",
+	"Datenschutz": "Privacy",
+	"Impressum": "Imprint",
 	"text to test": "text to test",
 	"%d cat": {
 		"one": "%d cat",
 		"other": "%d cats"
 	},
-	"Diensteliste.de": "Diensteliste.de",
-	"Imprint": "Imprint"
+	"Home": "Home",
+	"Lizenz": "Licence",
+	"start": "start"
 }
