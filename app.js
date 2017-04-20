@@ -54,6 +54,8 @@ hbs.registerHelper('language', function() {
     return i18n.getLocale();
 });
 
+hbs.registerPartials(__dirname + '/views' [, callback]);
+
 hbs.registerHelper('extend', function(name, context) {
     var block = blocks[name];
     if (!block) {
