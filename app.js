@@ -81,6 +81,20 @@ app.use(function(req,res,next){
 app.get('/', function(req, res){
     res.render('index');
 });
+
+app.param('id', function(request, response, next, id){
+  if (fs.existsSync("data/"+id+".json")) {
+    next();
+  } else {
+    response.status(404).render('error').end();
+  }
+});
+
+app.get('/:id', function(req, res){
+  var project = require("data/"+req.params.id+".json");
+  res.render('project',project);
+});
+
 app.get('/imprint', function(req, res){
     res.render('index',{title: i18n.__('Impressum')});
 });
