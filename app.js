@@ -54,7 +54,7 @@ hbs.registerHelper('language', function() {
     return i18n.getLocale();
 });
 
-hbs.registerPartials(__dirname + '/views' [, callback]);
+hbs.registerPartials(__dirname + '/views/partials');
 
 hbs.registerHelper('extend', function(name, context) {
     var block = blocks[name];
@@ -76,14 +76,14 @@ hbs.registerHelper('block', function(name) {
 app.use(function(req,res,next){
     res.locals.language = req.getLocale();
     next();
-})
+});
 
 app.get('/', function(req, res){
     res.render('index');
 });
 
 app.param('id', function(request, response, next, id){
-  if (fs.existsSync("data/"+id+".json")) {
+  if(/^[a-z0-9-]{3,}$/.test(id) && (fs.existsSync("data/"+id+".json"))) {
     next();
   } else {
     response.status(404).render('error').end();
@@ -91,12 +91,12 @@ app.param('id', function(request, response, next, id){
 });
 
 app.get('/:id', function(req, res){
-  var project = require("data/"+req.params.id+".json");
-  res.render('project',project);
+  res.locals = require("data/"+req.params.id+".json");
+  res.render('project');
 });
 
 app.get('/imprint', function(req, res){
-    res.render('index',{title: i18n.__('Impressum')});
+    res.render('imprint',{title: i18n.__('Impressum')});
 });
 
 app.get('/lang/:locale', function (req, res) {
