@@ -1,8 +1,17 @@
-var express = require('express'),
-    cookieParser = require('cookie-parser'),
-    i18n = require('i18n'),
-    hbs = require('hbs'),
-    app = module.exports = express();
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var cookieParser = require('cookie-parser');
+var i18n = require('i18n');
+var hbs = require('hbs');
+
+var index = require('./routes/index');
+var users = require('./routes/users');
+
+var app = express();
+
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 i18n.configure({
   // setup some locales - other locales default to en silently
@@ -23,26 +32,27 @@ i18n.configure({
 
 hbs.localsAsTemplateData(app);
 
-  // setup hbs
-  app.set('views', "" + __dirname + "/views");
-  app.set('view engine', 'hbs');
-  app.engine('hbs', hbs.__express);
-  app.use(express.static(__dirname + '/public'));
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
-  // you'll need cookies
-  app.use(cookieParser());
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(cookieParser());
+app.engine('hbs', hbs.__express);
+app.use(express.static(path.join(__dirname, 'public')));
 
-  // init i18n module for this loop
-  app.use(i18n.init);
+// init i18n module for this loop
+app.use(i18n.init);
 
-  app.use(function(req, res, next) {
-    i18n.setLocale(i18n.getLocale(req));
-    return next();
-  });
+app.use(function(req, res, next) {
+  i18n.setLocale(i18n.getLocale(req));
+  return next();
+});
 
-var blocks = {};
+app.use('/', index);
+app.use('/users', users);
 
-// register hbs helpers in res.locals' context which provides this.locale
 hbs.registerHelper('__', function () {
   return i18n.__.apply(this, arguments);
 });
@@ -54,57 +64,22 @@ hbs.registerHelper('language', function() {
     return i18n.getLocale();
 });
 
-hbs.registerPartials(__dirname + '/views/partials');
-
-hbs.registerHelper('extend', function(name, context) {
-    var block = blocks[name];
-    if (!block) {
-        block = blocks[name] = [];
-    }
-
-    block.push(context.fn(this)); // for older versions of handlebars, use block.push(context(this));
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-hbs.registerHelper('block', function(name) {
-    var val = (blocks[name] || []).join('\n');
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // clear the block
-    blocks[name] = [];
-    return val;
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
-app.use(function(req,res,next){
-    res.locals.language = req.getLocale();
-    next();
-});
-
-app.get('/', function(req, res){
-    res.render('index');
-});
-
-app.param('id', function(request, response, next, id){
-  if(/^[a-z0-9-]{3,}$/.test(id) && (fs.existsSync("data/"+id+".json"))) {
-    next();
-  } else {
-    response.status(404).render('error').end();
-  }
-});
-
-app.get('/:id', function(req, res){
-  res.locals = require("data/"+req.params.id+".json");
-  res.render('project');
-});
-
-app.get('/imprint', function(req, res){
-    res.render('imprint',{title: i18n.__('Impressum')});
-});
-
-app.get('/lang/:locale', function (req, res) {
-  res.cookie('locale', req.params.locale);
-  i18n.setLocale(i18n, req.params.locale);
-  res.redirect(req.headers.referer);
-});
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
-});
+module.exports = {app: app, server: server};

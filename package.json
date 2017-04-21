@@ -4,17 +4,17 @@
   "description": "Tool zur Erstellung koloberativer Dienstelisten",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "^1.4.3",
-    "express": "^4.15.2",
-    "handlebars": "^4.0.6",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
     "hbs": "^4.0.1",
     "i18n": "^0.8.3",
-    "mariadb-utilities": "^1.0.1",
-    "mysql": "^2.13.0",
-    "node-sass": "^4.5.2"
+    "serve-favicon": "~2.4.2",
+    "socket.io": "^1.7.3"
   },
   "repository": {
     "type": "git",
