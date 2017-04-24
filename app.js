@@ -6,7 +6,8 @@ var i18n = require('i18n');
 var hbs = require('hbs');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var imprint = require('./routes/imprint');
+var project = require('./routes/project');
 
 var app = express();
 
@@ -50,8 +51,19 @@ app.use(function(req, res, next) {
   return next();
 });
 
+
 app.use('/', index);
-app.use('/users', users);
+app.use('/Imprint', imprint);
+app.param('id',function(req, res, next, id){
+    var regex = new RegExp(/^[0-9a-z-]{3,24}$/);
+    if(regex.test(id)){
+      req.id = id;
+        next();
+    }else{
+      next('route');
+    }
+});
+app.use('/:id', project);
 
 hbs.registerHelper('__', function () {
   return i18n.__.apply(this, arguments);
@@ -62,6 +74,12 @@ hbs.registerHelper('__n', function () {
 
 hbs.registerHelper('language', function() {
     return i18n.getLocale();
+});
+hbs.registerHelper('ifCond', function(v1, v2, options) {
+  if(v1 === v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
 });
 
 // catch 404 and forward to error handler

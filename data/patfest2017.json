@@ -1,0 +1,21 @@
+{
+  "title": "Patfest 2017",
+  "organizer": {
+    "name": "Katholische Studentengemeinde Ilmenau",
+    "url": "http://www.ksg-ilmenau.de",
+    "mail": "patfest@ksg-ilmenau.de"
+  },
+  "admin-codes": {
+    "admin": "0000",
+    "editor": "ilmenau"
+  },
+  "services": ["aaa1"],
+  "serviceDB": {
+    "aaa1": {
+      "type": "service",
+      "maxCount": 4,
+      "minCount":1,
+      "registered": []
+    }
+  }
+}

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>
-    {{#if title}}{{title}} - {{/if}}{{{__ "Diensteliste.de"}}}</title>
+    {{#if title}}{{{__ title}}} - {{/if}}{{{__ "Diensteliste.de"}}}</title>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -34,8 +34,8 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">{{{__ "Home"}}}</a></li>
-          <li><a href="/imprint">{{{__ "Impressum"}}}</a></li>
+          <li {{#ifCond title "Impressum"}}{{else}}class="active"{{/ifCond}}><a href="{{#if link}}/{{link}}{{/if}}/">{{{__ "Home"}}}</a></li>
+          <li {{#ifCond title "Impressum"}}class="active"{{/ifCond}}><a href="{{#if link}}/{{link}}{{/if}}/Imprint">{{{__ "Impressum"}}}</a></li>
         </ul>
       </div>
       <!--/.nav-collapse -->
